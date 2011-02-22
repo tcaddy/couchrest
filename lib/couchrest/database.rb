@@ -90,6 +90,26 @@ module CouchRest
       end
     end
     
+    # Query a CouchDB list and view as defined by a <tt>_design</tt> document. 
+    # Acts like :view method, but accepts additional parameter (1st parameter)
+    # as the name of the list
+    def list(list_name, name, params = {}, &block)
+      keys = params.delete(:keys)
+      name = name.split('/') # I think this will always be length == 2, but maybe not...
+      dname = name.shift
+      vname = name.join('/')
+      url = CouchRest.paramify_url "#{@root}/_design/#{dname}/_list/#{list_name}/#{vname}", params
+      if keys
+        CouchRest.post(url, {:keys => keys})
+      else
+        if block_given?
+          @streamer.view("_design/#{dname}/_list/#{list_name}/#{vname}", params, &block)
+        else
+          CouchRest.get url
+        end
+      end
+    end
+    
     # GET a document from CouchDB, by id. Returns a Ruby Hash.
     def get(id, params = {})
       slug = escape_docid(id)
