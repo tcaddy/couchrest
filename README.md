@@ -1,5 +1,8 @@
 # CouchRest: CouchDB, close to the metal
 
+## Summary of this Fork:
+Added a :list method to lib/couchrest/database.rb.  It acts a lot like the :view method, but allows you to query a list function.
+
 CouchRest is based on [CouchDB's couch.js test
 library](http://svn.apache.org/repos/asf/couchdb/trunk/share/www/script/couch.js),
 which I find to be concise, clear, and well designed. CouchRest lightly wraps
